@@ -11,6 +11,7 @@ library(progress)
 #' @param start_line Line number to start processing from (for resuming)
 #' @param append Whether to append to existing CSV file (TRUE for resuming)
 #' @param batch_size Number of statements to collect before writing to CSV
+#' @export
 #' @return Number of statements processed
 parse_sql_to_csv <- function(
   sql_file_path,
@@ -205,6 +206,7 @@ parse_sql_to_csv <- function(
 #' @param resume_line Line number to resume from
 #' @param sql_keywords Vector of SQL keywords to look for
 #' @param batch_size Number of statements to collect before writing to CSV
+#' @export
 #' @return Number of statements processed
 resume_sql_parsing <- function(
   sql_file_path,
@@ -229,6 +231,7 @@ resume_sql_parsing <- function(
 #'
 #' @param file_path Path to the SQL dump file
 #' @param sql_keywords Vector of SQL keywords to look for (default: common DML/DDL)
+#' @export
 #' @return Tibble with complete SQL statements
 parse_sql_linebyline <- function(
   file_path,
@@ -364,6 +367,7 @@ parse_sql_linebyline <- function(
 #'
 #' @param file_path Path to the SQL dump file
 #' @param statement_types Vector of CREATE statement types to extract
+#' @export
 #' @return Tibble with CREATE statements
 extract_create_statements_efficient <- function(
   file_path,
@@ -413,6 +417,7 @@ extract_create_statements_efficient <- function(
 #'
 #' @param file_path Path to the SQL dump file
 #' @param table_names Optional vector of table names to filter for
+#' @export
 #' @return Tibble with INSERT statements
 extract_insert_statements_efficient <- function(file_path, table_names = NULL) {
   all_statements <- parse_sql_linebyline(file_path, sql_keywords = "INSERT")
