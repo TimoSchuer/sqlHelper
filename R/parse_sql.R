@@ -1,8 +1,6 @@
 library(stringr)
 library(dplyr)
 library(readr)
-library(progress)
-
 #' Parse SQL dump line by line and stream to CSV file
 #'
 #' @param sql_file_path Path to the SQL dump file
@@ -21,11 +19,6 @@ parse_sql_to_csv <- function(
   append = FALSE,
   batch_size = 1000
 ) {
-  # Get total lines for progress bar
-  total_lines <- length(readLines(sql_file_path, warn = FALSE))
-
-  # Initialize progress bar
-
   # Initialize variables
   current_statement <- ""
   in_statement <- FALSE
@@ -175,8 +168,6 @@ parse_sql_to_csv <- function(
     ))
   }
 
-  # Complete progress bar
-
   message(sprintf(
     "Processing complete. %d statements written to %s",
     statements_processed,
@@ -225,11 +216,6 @@ parse_sql_linebyline <- function(
   file_path,
   sql_keywords = c("CREATE", "INSERT", "UPDATE", "DELETE", "ALTER", "DROP")
 ) {
-  # Get total lines for progress bar
-  total_lines <- length(readLines(file_path, warn = FALSE))
-
-  # Initialize progress bar
-
   # Initialize variables
   statements <- tibble(
     statement_id = integer(),
@@ -254,8 +240,6 @@ parse_sql_linebyline <- function(
 
   while (length(line <- readLines(con, n = 1, warn = FALSE)) > 0) {
     line_number <- line_number + 1
-
-    # Update progress every 1000 lines
 
     # Skip comment lines and empty lines
     if (str_detect(line, "^\\s*--") || str_detect(line, "^\\s*$")) {
@@ -335,8 +319,6 @@ parse_sql_linebyline <- function(
         line_end = line_number
       )
   }
-
-  # Complete progress bar
 
   return(statements)
 }
