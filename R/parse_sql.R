@@ -25,12 +25,6 @@ parse_sql_to_csv <- function(
   total_lines <- length(readLines(sql_file_path, warn = FALSE))
 
   # Initialize progress bar
-  pb <- progress_bar$new(
-    format = "Processing SQL [:bar] :percent :eta (Line :current/:total)",
-    total = total_lines - start_line + 1,
-    clear = FALSE,
-    width = 80
-  )
 
   # Initialize variables
   current_statement <- ""
@@ -79,11 +73,6 @@ parse_sql_to_csv <- function(
 
   while (length(line <- readLines(con, n = 1, warn = FALSE)) > 0) {
     line_number <- line_number + 1
-
-    # Update progress every 1000 lines
-    if ((line_number - start_line + 1) %% 1000 == 0) {
-      pb$update((line_number - start_line + 1) / (total_lines - start_line + 1))
-    }
 
     # Skip comment lines and empty lines
     if (str_detect(line, "^\\s*--") || str_detect(line, "^\\s*$")) {
@@ -187,7 +176,6 @@ parse_sql_to_csv <- function(
   }
 
   # Complete progress bar
-  pb$update(1)
 
   message(sprintf(
     "Processing complete. %d statements written to %s",
@@ -241,12 +229,6 @@ parse_sql_linebyline <- function(
   total_lines <- length(readLines(file_path, warn = FALSE))
 
   # Initialize progress bar
-  pb <- progress_bar$new(
-    format = "Processing SQL [:bar] :percent :eta",
-    total = total_lines,
-    clear = FALSE,
-    width = 60
-  )
 
   # Initialize variables
   statements <- tibble(
@@ -274,9 +256,6 @@ parse_sql_linebyline <- function(
     line_number <- line_number + 1
 
     # Update progress every 1000 lines
-    if (line_number %% 1000 == 0) {
-      pb$update(line_number / total_lines)
-    }
 
     # Skip comment lines and empty lines
     if (str_detect(line, "^\\s*--") || str_detect(line, "^\\s*$")) {
@@ -358,7 +337,6 @@ parse_sql_linebyline <- function(
   }
 
   # Complete progress bar
-  pb$update(1)
 
   return(statements)
 }
